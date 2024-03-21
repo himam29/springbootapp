@@ -4,7 +4,7 @@ pipeline {
         maven "MyMaven"
     }
 	environment {
-		SCANNER_HOME= tool 'sonarscanner'
+		SCANNER_HOME= tool 'sonar-scanner'
         }
         stages {
             stage ('Checkout from git'){
@@ -29,10 +29,10 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('sonarserver') {
-                        // sh  ''' ${SCANNER_HOME}/bin/sonarscanner -Dsonar.projectName=springbootapp \
-                        // -Dsonar.projectKey=springbootapp '''
+                         sh  ''' ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectName=springbootapp \
+                         -Dsonar.projectKey=springbootapp '''
 			    
-			sh '${SCANNER_HOME}/bin/sonar-scanner --version'
+			// sh '${SCANNER_HOME}/bin/sonar-scanner --version'
                     }
                 }
             }
