@@ -1,3 +1,4 @@
+def registry = 'https://himam29.jfrog.io/'
 pipeline {
 	agent any
     tools {
@@ -50,6 +51,31 @@ pipeline {
                     sh 'docker build -t myrepo .'
                 }
             }
-        }		
-	}
+        }
+	stage("Jar Publish") {
+            steps {
+                script {
+                        echo '<--------------- Jar Publish Started --------------->'
+                         def server = Artifactory.newServer url:registry+"/artifactory" ,  credentialsId:"jfrog"
+                         def properties = "buildid=${env.BUILD_ID},commitid=${GIT_COMMIT}";
+                         def uploadSpec = """{
+                              "files": [
+                                {
+                                  "pattern": "target/springbootApp.jar",
+                                  "target": "springbootapprelease-libs-release-local",
+                                  "flat": "false",
+                                  "props" : "${properties}",
+                                  "exclusions": [ "*.sha1", "*.md5"]
+                                }
+                             ]
+                         }"""
+                         def buildInfo = server.upload(uploadSpec)
+                         buildInfo.env.collect()
+                         server.publishBuildInfo(buildInfo)
+                         echo '<--------------- Jar Publish Ended --------------->'  
+                
+                }
+            }   
+        }
+   }
 }
