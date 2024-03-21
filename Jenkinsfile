@@ -3,8 +3,8 @@ pipeline {
     tools {
         maven "MyMaven"
     }
-	environment {
-        SCANNER_HOME= tool 'SonarQubeScanner'
+		environment {
+			SCANNER_HOME= tool 'SonarQubeScanner'
         }
         stages {
             stage ('Checkout from git'){
