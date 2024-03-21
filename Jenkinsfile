@@ -28,7 +28,7 @@ pipeline {
 	stage ('Sonarqube analysis'){
             steps {
                 script {
-                    withSonarQubeEnv('SonarServer') {
+                    withSonarQubeEnv('sonarserver') {
                         sh  ''' ${SCANNER_HOME}/bin/sonarscanner -Dsonar.projectName=springbootapp \
                         -Dsonar.projectKey=springbootapp '''
                     }
