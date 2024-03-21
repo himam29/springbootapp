@@ -90,5 +90,16 @@ pipeline {
               }
            }
        }
+
+	stage('Kuberernetes Deployment'){
+        steps{
+            script {
+		withAWS(credentials: "AWSCLI", region: 'us-east-2') {
+                 sh 'aws eks --region us-east-2 update-kubeconfig --name my-first-eks-cluster'
+                 sh 'kubectl apply -f eks-deploy-k8s.yaml'
+		}
+            }
+        }
+    }
    }
 }
